@@ -1,0 +1,10 @@
+这个和DFS相比就比较简单，核心在于message的设计和server中对queue的管理
+
+你知道的，在rabbitMQ、activeMQ中，消息会去到哪里都由消息内的路由键来决定
+通过路由键很灵活的实现发布订阅模式
+
+但我的架构更加简单 - provider发消息就明确消息会发到哪些queue中，consumer以poll的方式拿消息就明确从哪些queue中拿
+第一个问题是：要解决provider的push模式，将message中嵌入目的channel固然是好事
+
+解决方案是：每个pushQueue都记录一个channel列表，根据此列表将数据发出
+
